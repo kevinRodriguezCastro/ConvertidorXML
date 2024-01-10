@@ -12,7 +12,12 @@ public class ConversorObjeto {
         persona = g.fromJson(json,Persona.class);
     }
     public void xmlObjeto(String xml){
-
+        PersonaHandler handler = new PersonaHandler();
+        try {
+            handler.parse(xml);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     public void yamlObjeto(String yaml){
 
