@@ -28,4 +28,13 @@ public class Persona {
     public void setEdad(int edad) {
         this.edad = edad;
     }
+    public String xml(){
+        return "<Persona>\n\t<Nombre> "+this.getNombre()+" </Nombre>\n\t<Apellidos> "+this.getApellidos()+" </Apellidos>\n\t<Edad> "+this.getEdad()+" </Edad>\n</Persona>";
+    }
+    public String json() {
+        return "{\n\t'Nombre':'"+this.getNombre()+"',\n\t'Apellidos':'"+this.getApellidos()+"',\n\t'Edad':'"+this.getEdad()+"'\n}";
+    }
+    public String yaml(){
+        return "Persona:\n\tNombre:"+this.getNombre()+"\n\tApellidos:"+this.getApellidos()+"\n\tEdad:"+this.getEdad();
+    }
 }
