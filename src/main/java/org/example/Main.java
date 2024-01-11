@@ -43,6 +43,7 @@ public class Main {
 
         switch (opcion){
             case "1":
+
                 extension = c.extensionArchivo(archivo.getName());
                 if (extension.equalsIgnoreCase("xml"))break;
                 if (extension.equalsIgnoreCase("yaml")) {
@@ -51,6 +52,8 @@ public class Main {
                 if (extension.equalsIgnoreCase("json")){
                     contenido = c.jsonObjeto(contenido,"xml");
                 }
+
+
                 bw.write(contenido);
                 bw.close();
                 fw.close();
@@ -60,6 +63,7 @@ public class Main {
 
                 break;
             case "2":
+
                 extension = c.extensionArchivo(archivo.getName());
                 if (extension.equalsIgnoreCase("json"))break;
                 if (extension.equalsIgnoreCase("yaml")) {
@@ -68,6 +72,8 @@ public class Main {
                 if (extension.equalsIgnoreCase("xml")){
                     contenido = c.xmlObjeto(contenido,"json");
                 }
+
+
                 bw.write(contenido);
                 bw.close();
                 fw.close();

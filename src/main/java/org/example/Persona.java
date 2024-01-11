@@ -5,6 +5,9 @@ public class Persona {
     private String apellidos;
     private int edad;
 
+    public Persona() {
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -29,12 +32,13 @@ public class Persona {
         this.edad = edad;
     }
     public String xml(){
-        return "<Persona>\n\t<Nombre> "+this.getNombre()+" </Nombre>\n\t<Apellidos> "+this.getApellidos()+" </Apellidos>\n\t<Edad> "+this.getEdad()+" </Edad>\n</Persona>";
+        return "\t<persona>\n\t\t<nombre> "+this.getNombre()+" </nombre>\n\t\t<apellidos> "+this.getApellidos()+" </apellidos>\n\t\t<edad> "+this.getEdad()+" </edad>\n\t</persona>";
     }
     public String json() {
-        return "{\n\t'Nombre':'"+this.getNombre()+"',\n\t'Apellidos':'"+this.getApellidos()+"',\n\t'Edad':'"+this.getEdad()+"'\n}";
+        return "{\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}";
+        //return "{\"persona\": {\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}}";
     }
     public String yaml(){
-        return "Persona:\n\tNombre:"+this.getNombre()+"\n\tApellidos:"+this.getApellidos()+"\n\tEdad:"+this.getEdad();
+        return "-\tnombre:"+this.getNombre()+"\n\tapellidos:"+this.getApellidos()+"\n\tedad:"+this.getEdad();
     }
 }

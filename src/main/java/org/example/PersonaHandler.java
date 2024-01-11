@@ -38,19 +38,29 @@ public class PersonaHandler extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
+        if (contenido == null) {
+            contenido = new StringBuilder();
+        }
         contenido.append(ch, start, length);
     }
+
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("nombre")) {
-            personaActual.setNombre(contenido.toString().trim());
+            personaActual.setNombre(contenido != null ? contenido.toString().trim() : null);
         } else if (qName.equalsIgnoreCase("apellidos")) {
-            personaActual.setApellidos(contenido.toString().trim());
+            personaActual.setApellidos(contenido != null ? contenido.toString().trim() : null);
         } else if (qName.equalsIgnoreCase("edad")) {
-            personaActual.setEdad(Integer.parseInt(contenido.toString().trim()));
+            try {
+                personaActual.setEdad(contenido != null ? Integer.parseInt(contenido.toString().trim()) : 0);
+            } catch (NumberFormatException e) {
+                // Manejar la excepción si la edad no es un número válido
+                personaActual.setEdad(0); // O puedes dejarlo como null si lo prefieres
+            }
         } else if (qName.equalsIgnoreCase("persona")) {
             personas.add(personaActual);
         }
+        contenido = null; // Restablecer contenido después de usarlo
     }
 }

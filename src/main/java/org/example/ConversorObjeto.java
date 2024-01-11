@@ -22,12 +22,12 @@ public class ConversorObjeto {
             for (Persona tmp : personas){
                 contenido += tmp.xml()+"\n";
             }
-            return "<Personas>"+contenido+"</Personas";
+            return "<personas>\n"+contenido+"</personas>";
         }else if (extension.equalsIgnoreCase("yaml")){
             for (Persona tmp : personas){
                  contenido += tmp.yaml()+"\n";
             }
-            return contenido;
+            return "persona:\n"+contenido;
         }
         return null;
     }
@@ -50,66 +50,96 @@ public class ConversorObjeto {
             }else {
                 for (Persona tmp:personas){
                     contenido += tmp.json();
+                    contenido +=",";
                 }
-                return "{["+contenido+"]}";
+                if (!contenido.isEmpty()) {
+                    contenido = contenido.substring(0, contenido.length() - 1);
+                }
+                return "["+contenido+"]";
             }
         }else if (extension.equalsIgnoreCase("yaml")){
             for (Persona tmp : personas){
                 contenido += tmp.yaml()+"\n";
             }
-            return contenido;
+            return "persona:\n"+contenido;
         }
         return null;
     }
     public String yamlObjeto(String yaml, String extension){
         boolean esValor = false;
         int contador = 0;
-        String valor = "";
-        Persona p = new Persona();
+        //String valor = "";
+        Persona personaActual = null;
+        String contenido = "";
         ArrayList<Persona> personas = new ArrayList<>();
 
-        for (char c : yaml.toCharArray()){
-            if (esValor){
-                if (c == '\n'){
-                    esValor = false;
-                    switch (contador){
-                        case 1:
-                            p.setNombre(valor.strip());
-                            contador++;
-                            break;
-                        case 2:
-                            p.setApellidos(valor.strip());
-                            contador++;
-                            break;
-                        case 3:
-                            p.setEdad(Integer.parseInt(valor.strip()));
-                            contador = 0;
-
-                            valor = "";
-                            personas.add(p);
-                            p = new Persona();
-                            break;
+        for (String linea : yaml.split("\n")) {
+            if (linea.startsWith("-")) {
+                // Nueva persona, agregar la persona actual a la lista y crear una nueva
+                if (personaActual != null) {
+                    personas.add(personaActual);
+                }
+                personaActual = new Persona();
+                if (personaActual != null) {
+                    String[] partes = linea.trim().split(":");
+                    if (partes.length == 2) {
+                        String valor = partes[1].trim();
+                        personaActual.setNombre(valor);
                     }
-                }else {
-                   valor += c;
+                }
+            } else if (linea.trim().startsWith("apellidos:")) {
+                if (personaActual != null) {
+                    String valor = linea.trim().substring("apellidos:".length()).trim();
+                    personaActual.setApellidos(valor);
+                }
+            } else if (linea.trim().startsWith("edad:")) {
+                if (personaActual != null) {
+                    String valor = linea.trim().substring("edad:".length()).trim();
+                    if (esNumero(valor)) {
+                        personaActual.setEdad(Integer.parseInt(valor));
+                    }
                 }
             }
-            if (c == ':'){
-                esValor = true;
-                contador++;
+        }
+
+        // Agregar la última persona a la lista
+        if (personaActual != null) {
+            personas.add(personaActual);
+        }
+
+        if (extension.equalsIgnoreCase("xml")){
+            for (Persona tmp : personas){
+                contenido += tmp.xml()+"\n";
+            }
+            return "<personas>\n"+contenido+"</personas>";
+        } else if (extension.equalsIgnoreCase("json")) {
+            if (personas.size()==1){
+                return personas.get(0).json();
+            }else {
+                for (Persona tmp:personas){
+                    contenido += tmp.json();
+                    contenido +=",";
+                }
+                if (!contenido.isEmpty()) {
+                    contenido = contenido.substring(0, contenido.length() - 1);
+                }
+                return "["+contenido+"]";
             }
         }
-        
-        
-        if (extension.equalsIgnoreCase("xml")){
-            
-        } else if (extension.equalsIgnoreCase("json")) {
-            
-        }
+        return null;
     }
 
     public String extensionArchivo(String nombreArchivo){
         int ultimaPosicion = nombreArchivo.lastIndexOf(".");
         return nombreArchivo.substring(ultimaPosicion+1);
+    }
+
+    private boolean esNumero(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class App {
             ruta = "./src/archivo.xml";
             archivo = new File(ruta);
             if (!archivo.exists()){
-                ruta = "./src/archivo.json";
+                ruta = "./src/archivo.xml";
                 archivo = new File(ruta);
             }
         }
@@ -74,7 +74,7 @@ public class App {
                 bw.close();
                 fw.close();
 
-                File json = new File("./src/archivo.json");
+                File json = new File("./src/archivo.xml");
                 archivo.renameTo(json);
                 /*
                 json.createNewFile();
