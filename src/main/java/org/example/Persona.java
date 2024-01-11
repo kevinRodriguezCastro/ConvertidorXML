@@ -35,7 +35,7 @@ public class Persona {
         return "\t<persona>\n\t\t<nombre> "+this.getNombre()+" </nombre>\n\t\t<apellidos> "+this.getApellidos()+" </apellidos>\n\t\t<edad> "+this.getEdad()+" </edad>\n\t</persona>";
     }
     public String json() {
-        return "{\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}";
+        return "\t{\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}";
         //return "{\"persona\": {\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}}";
     }
     public String yaml(){

@@ -43,7 +43,6 @@ public class Main {
 
         switch (opcion){
             case "1":
-
                 extension = c.extensionArchivo(archivo.getName());
                 if (extension.equalsIgnoreCase("xml"))break;
                 if (extension.equalsIgnoreCase("yaml")) {

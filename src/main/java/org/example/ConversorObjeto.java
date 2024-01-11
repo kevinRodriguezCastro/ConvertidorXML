@@ -3,6 +3,7 @@ package org.example;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConversorObjeto {
 
@@ -16,18 +17,11 @@ public class ConversorObjeto {
         Gson g = new Gson();
         Persona[] personas = g.fromJson(json,Persona[].class);
 
-        String contenido = "";
-
-        if (extension.equalsIgnoreCase("xml")){
-            for (Persona tmp : personas){
-                contenido += tmp.xml()+"\n";
-            }
-            return "<personas>\n"+contenido+"</personas>";
-        }else if (extension.equalsIgnoreCase("yaml")){
-            for (Persona tmp : personas){
-                 contenido += tmp.yaml()+"\n";
-            }
-            return "persona:\n"+contenido;
+        switch (extension){
+            case "xml":
+                return xml(personas);
+            case "yaml":
+                return yaml(personas);
         }
         return null;
     }
@@ -36,46 +30,26 @@ public class ConversorObjeto {
         PersonaHandler handler = new PersonaHandler();
         ArrayList<Persona> personas;
 
-        String contenido = "";
-
         try {
             personas = (ArrayList<Persona>) handler.parse(xml);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        if (extension.equalsIgnoreCase("json")){
-            if (personas.size()==1){
-                return personas.get(0).json();
-            }else {
-                for (Persona tmp:personas){
-                    contenido += tmp.json();
-                    contenido +=",";
-                }
-                if (!contenido.isEmpty()) {
-                    contenido = contenido.substring(0, contenido.length() - 1);
-                }
-                return "["+contenido+"]";
-            }
-        }else if (extension.equalsIgnoreCase("yaml")){
-            for (Persona tmp : personas){
-                contenido += tmp.yaml()+"\n";
-            }
-            return "persona:\n"+contenido;
+        switch (extension){
+            case "json":
+                return json(personas);
+            case "yaml":
+                return yaml(personas);
         }
         return null;
     }
     public String yamlObjeto(String yaml, String extension){
-        boolean esValor = false;
-        int contador = 0;
-        //String valor = "";
         Persona personaActual = null;
-        String contenido = "";
         ArrayList<Persona> personas = new ArrayList<>();
 
         for (String linea : yaml.split("\n")) {
             if (linea.startsWith("-")) {
-                // Nueva persona, agregar la persona actual a la lista y crear una nueva
                 if (personaActual != null) {
                     personas.add(personaActual);
                 }
@@ -102,33 +76,64 @@ public class ConversorObjeto {
             }
         }
 
-        // Agregar la última persona a la lista
         if (personaActual != null) {
             personas.add(personaActual);
         }
 
-        if (extension.equalsIgnoreCase("xml")){
-            for (Persona tmp : personas){
-                contenido += tmp.xml()+"\n";
-            }
-            return "<personas>\n"+contenido+"</personas>";
-        } else if (extension.equalsIgnoreCase("json")) {
-            if (personas.size()==1){
-                return personas.get(0).json();
-            }else {
-                for (Persona tmp:personas){
-                    contenido += tmp.json();
-                    contenido +=",";
-                }
-                if (!contenido.isEmpty()) {
-                    contenido = contenido.substring(0, contenido.length() - 1);
-                }
-                return "["+contenido+"]";
-            }
+        switch (extension){
+            case "xml":
+                return xml(personas);
+            case "json":
+                return json(personas);
         }
         return null;
     }
 
+
+
+    private String xml(ArrayList<Persona> personas){
+        String contenido = "";
+        for (Persona tmp : personas){
+            contenido += tmp.xml()+"\n";
+        }
+        return "<personas>\n"+contenido+"</personas>";
+    }
+    private String xml(Persona[] personas){
+        String contenido = "";
+        for (Persona tmp : personas){
+            contenido += tmp.xml()+"\n";
+        }
+        return "<personas>\n"+contenido+"</personas>";
+    }
+    private String json(ArrayList<Persona> personas){
+        String contenido = "";
+        if (personas.size()==1){
+            return personas.get(0).json();
+        }else {
+            for (Persona tmp : personas) {
+                contenido += tmp.json();
+                contenido += ",\n";
+            }
+            if (!contenido.isEmpty()) {
+                contenido = contenido.substring(0, contenido.length() - 2);
+            }
+            return "[\n" + contenido + "\n]";
+        }
+    }
+    private String yaml(ArrayList<Persona> personas){
+        String contenido = "";
+        for (Persona tmp : personas){
+            contenido += tmp.yaml()+"\n";
+        }
+        return "persona:\n"+contenido;
+    }
+    private String yaml(Persona[] personas){
+        String contenido = "";
+        for (Persona tmp : personas){
+            contenido += tmp.yaml()+"\n";
+        }
+        return "persona:\n"+contenido;
+    }
     public String extensionArchivo(String nombreArchivo){
         int ultimaPosicion = nombreArchivo.lastIndexOf(".");
         return nombreArchivo.substring(ultimaPosicion+1);
