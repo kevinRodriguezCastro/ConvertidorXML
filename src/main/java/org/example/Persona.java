@@ -1,11 +1,14 @@
 package org.example;
 
-public class Persona {
+import java.io.Serializable;
+
+public class Persona implements Serializable {
     private String nombre;
     private String apellidos;
     private int edad;
 
     public Persona() {
+
     }
 
     public String getNombre() {

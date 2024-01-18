@@ -19,10 +19,10 @@ public class Main {
             }
         }
 
+
         String linea;
         String contenido = "";
         ConversorObjeto c = new ConversorObjeto();
-
 
         FileReader fr = new FileReader(archivo);
         BufferedReader br = new BufferedReader(fr);
@@ -40,7 +40,6 @@ public class Main {
         FileWriter fw       = new FileWriter(archivo);
         BufferedWriter bw   = new BufferedWriter(fw);
 
-
         switch (opcion){
             case "1":
                 extension = c.extensionArchivo(archivo.getName());
@@ -52,15 +51,14 @@ public class Main {
                     contenido = c.jsonObjeto(contenido,"xml");
                 }
 
-
                 bw.write(contenido);
                 bw.close();
                 fw.close();
 
                 File xml = new File("./src/archivo.xml");
                 archivo.renameTo(xml);
-
                 break;
+
             case "2":
 
                 extension = c.extensionArchivo(archivo.getName());
@@ -72,18 +70,17 @@ public class Main {
                     contenido = c.xmlObjeto(contenido,"json");
                 }
 
-
                 bw.write(contenido);
                 bw.close();
                 fw.close();
 
                 File json = new File("./src/archivo.json");
                 archivo.renameTo(json);
-
                 break;
-            case "3":
-                extension = c.extensionArchivo(archivo.getName());
 
+            case "3":
+
+                extension = c.extensionArchivo(archivo.getName());
                 if (extension.equalsIgnoreCase("yaml"))break;
                 if (extension.equalsIgnoreCase("xml")) {
                     contenido = c.xmlObjeto(contenido,"yaml");

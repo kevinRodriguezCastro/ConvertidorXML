@@ -1,9 +1,16 @@
 package org.example;
 
 import com.google.gson.Gson;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ConversorObjeto {
 
@@ -45,6 +52,25 @@ public class ConversorObjeto {
         return null;
     }
     public String yamlObjeto(String yaml, String extension){
+        ArrayList<Persona> personas = new ArrayList<>();
+        InputStream inputStream = new ByteArrayInputStream(yaml.getBytes());
+
+        Yaml y = new Yaml();
+        List<Map<String, Object>> data = y.load(inputStream);
+
+
+        for (Map<String,Object> tmp : data){
+            Persona p = new Persona();
+            p.setNombre(tmp.get("nombre").toString());
+            System.out.println(p.getNombre());
+            p.setApellidos(tmp.get("apellidos").toString());
+            System.out.println(p.getApellidos());
+            p.setEdad((int)tmp.get("edad"));
+            System.out.println(p.getEdad());
+            personas.add(p);
+        }
+
+        /*
         Persona personaActual = null;
         ArrayList<Persona> personas = new ArrayList<>();
 
@@ -79,7 +105,7 @@ public class ConversorObjeto {
         if (personaActual != null) {
             personas.add(personaActual);
         }
-
+*/
         switch (extension){
             case "xml":
                 return xml(personas);
@@ -105,6 +131,8 @@ public class ConversorObjeto {
         }
         return "<personas>\n"+contenido+"</personas>";
     }
+
+
     private String json(ArrayList<Persona> personas){
         String contenido = "";
         if (personas.size()==1){
@@ -120,6 +148,9 @@ public class ConversorObjeto {
             return "[\n" + contenido + "\n]";
         }
     }
+
+
+
     private String yaml(ArrayList<Persona> personas){
         String contenido = "";
         for (Persona tmp : personas){

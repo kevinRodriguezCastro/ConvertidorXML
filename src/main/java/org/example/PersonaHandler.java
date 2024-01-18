@@ -12,13 +12,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PersonaHandler extends DefaultHandler {
     private List<Persona> personas;
     private Persona personaActual;
     private StringBuilder contenido;
 
     public List<Persona> parse(String xml) throws Exception {
-
         InputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
@@ -48,6 +48,25 @@ public class PersonaHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("nombre")) {
+            personaActual.setNombre(contenido.toString().trim());
+        } else if (qName.equalsIgnoreCase("apellidos")) {
+            personaActual.setApellidos(contenido.toString().trim());
+        } else if (qName.equalsIgnoreCase("edad")) {
+            try {
+                personaActual.setEdad(Integer.parseInt(contenido.toString().trim()));
+            } catch (NumberFormatException e) {
+                personaActual.setEdad(0);
+            }
+        } else if (qName.equalsIgnoreCase("persona")) {
+            personas.add(personaActual);
+        }
+        contenido = null;
+    }
+
+    /*
+     @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (qName.equalsIgnoreCase("nombre")) {
             personaActual.setNombre(contenido != null ? contenido.toString().trim() : null);
         } else if (qName.equalsIgnoreCase("apellidos")) {
             personaActual.setApellidos(contenido != null ? contenido.toString().trim() : null);
@@ -55,12 +74,13 @@ public class PersonaHandler extends DefaultHandler {
             try {
                 personaActual.setEdad(contenido != null ? Integer.parseInt(contenido.toString().trim()) : 0);
             } catch (NumberFormatException e) {
-                // Manejar la excepción si la edad no es un número válido
-                personaActual.setEdad(0); // O puedes dejarlo como null si lo prefieres
+
+                personaActual.setEdad(0);
             }
         } else if (qName.equalsIgnoreCase("persona")) {
             personas.add(personaActual);
         }
-        contenido = null; // Restablecer contenido después de usarlo
+        contenido = null;
     }
+     */
 }
