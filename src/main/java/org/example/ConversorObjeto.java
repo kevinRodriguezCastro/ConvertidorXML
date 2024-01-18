@@ -156,14 +156,14 @@ public class ConversorObjeto {
         for (Persona tmp : personas){
             contenido += tmp.yaml()+"\n";
         }
-        return "persona:\n"+contenido;
+        return contenido;
     }
     private String yaml(Persona[] personas){
         String contenido = "";
         for (Persona tmp : personas){
             contenido += tmp.yaml()+"\n";
         }
-        return "persona:\n"+contenido;
+        return contenido;
     }
     public String extensionArchivo(String nombreArchivo){
         int ultimaPosicion = nombreArchivo.lastIndexOf(".");

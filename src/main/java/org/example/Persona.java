@@ -42,6 +42,6 @@ public class Persona implements Serializable {
         //return "{\"persona\": {\"nombre\":\"" + this.getNombre() + "\",\"apellidos\":\"" + this.getApellidos() + "\",\"edad\":\"" + this.getEdad() + "\"}}";
     }
     public String yaml(){
-        return "-\tnombre:"+this.getNombre()+"\n\tapellidos:"+this.getApellidos()+"\n\tedad:"+this.getEdad();
+        return "- nombre:"+this.getNombre()+"\n apellidos:"+this.getApellidos()+"\n edad:"+this.getEdad();
     }
 }
